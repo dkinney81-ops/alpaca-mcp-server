@@ -4,12 +4,11 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
+COPY pyproject.toml uv.lock README.md ./
+
 RUN --mount=type=cache,id=s/8498400f-2692-45de-9283-1081962cb43d-root/.cache/uv,target=/root/.cache/uv \
-    --mount=type=bind,source=uv.lock,target=uv.lock \
-    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project
 
-COPY pyproject.toml uv.lock README.md ./
 COPY src/ ./src/
 COPY .github/core/ ./.github/core/
 
@@ -18,5 +17,4 @@ RUN --mount=type=cache,id=s/8498400f-2692-45de-9283-1081962cb43d-root/.cache/uv,
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-# HTTP transport for remote MCP clients (e.g. ChatGPT). Bind all interfaces; use Render's $PORT via cli default.
 CMD ["alpaca-mcp-server", "--transport", "streamable-http", "--host", "0.0.0.0"]
