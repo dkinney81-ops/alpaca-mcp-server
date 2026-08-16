@@ -10,7 +10,6 @@ RUN --mount=type=cache,id=s/8498400f-2692-45de-9283-1081962cb43d-root/.cache/uv,
     uv sync --frozen --no-install-project
 
 COPY src/ ./src/
-COPY .github/core/ ./.github/core/
 
 RUN --mount=type=cache,id=s/8498400f-2692-45de-9283-1081962cb43d-root/.cache/uv,target=/root/.cache/uv \
     uv sync --frozen
